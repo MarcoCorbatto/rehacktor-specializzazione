@@ -6,43 +6,43 @@ import CardGame from "../../components/CardGame";
 export default function GenrePage() {
   const { genre } = useParams();
 
-  // const [data, setData] = useState(null);
-  // const [error, setError] = useState(null);
-
   const initialUrl =
     "https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&genres=${genre}&page=1";
 
-    const { data, loading, error, updateUrl } = useFetchSolution(initialUrl);
-
-  // const load = async () => {
-  //   try {
-  //     const response = await fetch(initialUrl);
-  //     if (!response.ok) {
-  //       throw new Error(response.statusText);
-  //     }
-  //     const json = await response.json();
-  //     setData(json);
-  //   } catch (error) {
-  //     setError(error.message);
-  //     setData(null);
-  //   }
-  // };
+  const { data, loading, error, updateUrl } = useFetchSolution(initialUrl);
 
   useEffect(() => {
-    // load();
-    const newUrl = "https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&genres=${genre}&page=1";
+    const newUrl =
+      "https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&genres=${genre}&page=1";
     updateUrl(newUrl);
   }, [genre]);
-
   return (
-    <>
-      <h2>Welcome to {genre} page</h2>
-      <div className="grid-games-list">
-        {loading && <p>Caricamento...</p>}
-        {error && <article>{error}</article>}
+    <div className="p-4">
+      <div className="text-center mb-6">
+        <h2 className="text-4xl font-bold capitalize text-primary">
+          Welcome to {genre} games
+        </h2>
+        <p className="text-sm text-gray-500 mt-2">
+          Discover the best {genre} games
+        </p>
+      </div>
+
+      {loading && (
+        <div className="flex justify-center items-center">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+      )}
+
+      {error && (
+        <div className="alert alert-error mt-4">
+          <span>Error: {error}</span>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {data &&
           data.results.map((game) => <CardGame key={game.id} game={game} />)}
       </div>
-    </>
+    </div>
   );
 }
