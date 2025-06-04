@@ -29,7 +29,7 @@ export default function HomePage() {
 
   return (
     <>
-      <h1>Home Page</h1>
+      <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl">HomePage</button>
       <div className="grid-games-list">
         {loading && <p>Caricamento...</p>}
         {error && <article>{error}</article>}
