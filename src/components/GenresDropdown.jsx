@@ -3,7 +3,7 @@ import useFetchSolution from "../hook/useFetchSolution";
 
 export default function GenresDropdown() {
   const initialUrl =
-    "https://api.rawg.io/api/genres?key=6741a5ee1d0b42929ef2b37f6b920f20";
+    `https://api.rawg.io/api/genres?key=6741a5ee1d0b42929ef2b37f6b920f20`;
 
   const { data, loading, error } = useFetchSolution(initialUrl);
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import useFetchSolution from "../../hook/useFetchSolution";
 import CardGame from "../../components/CardGame";
@@ -7,15 +7,17 @@ export default function GenrePage() {
   const { genre } = useParams();
 
   const initialUrl =
-    "https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&genres=${genre}&page=1";
+     `https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&genres=${genre}&page=1`;
+
 
   const { data, loading, error, updateUrl } = useFetchSolution(initialUrl);
 
   useEffect(() => {
     const newUrl =
-      "https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&genres=${genre}&page=1";
+       `https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&genres=${genre}&page=1`; 
     updateUrl(newUrl);
   }, [genre]);
+
   return (
     <div className="p-4">
       <div className="text-center mb-6">

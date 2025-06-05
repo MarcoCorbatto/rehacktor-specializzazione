@@ -3,7 +3,7 @@ import useFetchSolution from "../../hook/useFetchSolution";
 
 export default function HomePage() {
   const initialUrl =
-    "https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&dates=2024-01-01,2024-12-31&page=1";
+    `https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&dates=2024-01-01,2024-12-31&page=1`;
 
   const { data, loading, error } = useFetchSolution(initialUrl);
 

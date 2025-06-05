@@ -8,7 +8,7 @@ export default function SearchPage() {
   const game = searchParams.get("query");
 
   const initialUrl =
-    "https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&search=${game}";
+    `https://api.rawg.io/api/games?key=6741a5ee1d0b42929ef2b37f6b920f20&search=${game}`;
 
   const { loading, data, error, updateUrl } = useFetchSolution(initialUrl);
 
@@ -28,3 +28,4 @@ export default function SearchPage() {
     </div>
   );
 }
+
