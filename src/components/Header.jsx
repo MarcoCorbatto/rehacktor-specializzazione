@@ -1,44 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router";
 import supabase from "../supabase/supabase-client";
+import SessionContext from "../context/SessionContext";
 
 export default function Header() {
-  const [session, setSession] = useState(null);
-
-  const getSession = async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) {
-      console.log(data);
-    } else {
-      setSession(null);
-    }
-  };
+  const { session } = useContext(SessionContext) || {};
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) console.log(error);
     else alert("Signed out 👋");
-    getSession();
   };
-
-  useEffect(() => {
-    const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-    };
-
-    getSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
 
   return (
     <div className="navbar bg-base-100 shadow-md px-4 sticky top-0 z-50">
@@ -89,10 +61,10 @@ export default function Header() {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                <Link to="/account" className="justify-between">
                   Profile
                   <span className="badge badge-accent">New</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a>Settings</a>

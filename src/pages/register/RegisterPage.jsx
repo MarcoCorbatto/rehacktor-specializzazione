@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { FormSchema as ConfirmSchema } from "../../lib/validationForm";
 import { getErrors, getFieldError } from "../../lib/validationForm";
 import supabase from "../../supabase/supabase-client";
 
 export default function RegisterPage() {
+   const navigate = useNavigate();
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [touchedFields, setTouchedFields] = useState({});

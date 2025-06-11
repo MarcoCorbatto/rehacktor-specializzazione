@@ -1,19 +1,10 @@
-// import { useState } from "react";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer"
+import {Routing} from "./routes/Routing";
+import SessionProvider from "./context/SessionProvider";
 
-// function App() {
-//   return (
-  
-//     <>
-    
-//     <Header />
-    
-//     <Footer />
-    
-//     </>
-   
-//   );
-// }
-
-// export default App;
+export default function App() {
+    return (
+        <SessionProvider>
+            <Routing />
+        </SessionProvider>
+    );
+}
