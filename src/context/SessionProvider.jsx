@@ -5,24 +5,28 @@ import supabase from "../supabase/supabase-client";
 export default function SessionProvider({ children }) {
   const [session, setSession] = useState(null);
 
+  
   useEffect(() => {
-    // 1. Ottieni la sessione iniziale
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    // 2. Ascolta i cambiamenti di autenticazione
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => {
-      subscription?.unsubscribe?.(); // sicurezza in più
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      setSession(data?.session ?? null);
     };
+
+
+    getSession();
+
+   
+ 
+    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
+      setSession(session);
+    });
+
+    return () => listener?.subscription.unsubscribe();
   }, []);
 
+
   return (
-    <SessionContext.Provider value={{ session }}>
+    <SessionContext.Provider value={{ session, setSession }}>
       {children}
     </SessionContext.Provider>
   );

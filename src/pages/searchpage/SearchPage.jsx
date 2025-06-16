@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import CardGame from "../../components/CardGame";
 import useFetchSolution from "../../hook/useFetchSolution";
 

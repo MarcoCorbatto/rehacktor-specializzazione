@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from "react";
-import supabase from "../supabase/supabase-client"; // Assicurati del path
+import supabase from "../supabase/supabase-client";
 
 export const FavoritesContext = createContext();
 
@@ -12,9 +12,11 @@ export default function FavoritesProvider({ children }) {
       setSession(data.session);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
 
     return () => {
       listener.subscription.unsubscribe();
@@ -37,14 +39,14 @@ export default function FavoritesProvider({ children }) {
 
   const addFavorites = async (game) => {
     if (!session) return;
-    await supabase
-      .from("favorites")
-      .insert([{
+    await supabase.from("favorites").insert([
+      {
         user_id: session.user.id,
         game_id: game.id,
         game_name: game.name,
         game_image: game.background_image,
-      }]);
+      },
+    ]);
   };
 
   const removeFavorite = async (gameId) => {
@@ -61,7 +63,11 @@ export default function FavoritesProvider({ children }) {
       getFavorites();
       const favoritesChannel = supabase
         .channel("favorites")
-        .on("postgres_changes", { event: "*", schema: "public", table: "favorites" }, getFavorites)
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "favorites" },
+          getFavorites
+        )
         .subscribe();
 
       return () => {

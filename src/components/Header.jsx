@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import supabase from "../supabase/supabase-client";
 import SessionContext from "../context/SessionContext";
-
+import Searchbar from "../components/Searchbar";
 export default function Header() {
   const { session } = useContext(SessionContext) || {};
 
@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <div className="navbar bg-base-100 shadow-md px-4 sticky top-0 z-50">
-      <div className="flex-1">
+      <div className="flex-1"> 
         <Link
           to="/"
           className="btn btn-ghost normal-case text-2xl text-primary hover:bg-transparent"
@@ -23,24 +23,11 @@ export default function Header() {
         </Link>
       </div>
 
+      
       <div className="flex items-center gap-3">
-        <label className="input input-bordered flex items-center gap-2 w-32 md:w-64">
-          <input type="text" placeholder="Search games..." className="grow" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 opacity-60"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z"
-            />
-          </svg>
-        </label>
+        
+       
+        <Searchbar /> 
 
         {session ? (
           <div className="dropdown dropdown-end">
@@ -63,11 +50,7 @@ export default function Header() {
               <li>
                 <Link to="/account" className="justify-between">
                   Profile
-                  <span className="badge badge-accent">New</span>
                 </Link>
-              </li>
-              <li>
-                <a>Settings</a>
               </li>
               <li>
                 <button onClick={signOut}>Logout</button>

@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import useFetchSolution from "../hook/useFetchSolution";
 
 export default function GenresDropdown() {

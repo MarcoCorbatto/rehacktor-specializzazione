@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { FormSchema as ConfirmSchema } from "../../lib/validationForm";
 import { getErrors, getFieldError } from "../../lib/validationForm";
 import supabase from "../../supabase/supabase-client";
