@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useFetchSolution from "../../hook/useFetchSolution";
 import supabase from "../../supabase/supabase-client";
+import Chatbox from "../../components/Chatbox";
 
 export default function GamePage() {
   const { id } = useParams();
@@ -59,6 +60,13 @@ export default function GamePage() {
             <button className="btn btn-primary mt-4" onClick={handleAddFavorites}>
               ❤️ Aggiungi ai preferiti
             </button>
+             
+              {/* inizio chatboxx  */}
+            <div className="mt-8">
+             <h2 className="text-xl font-semibold mb-2">chat del gioco</h2>
+             <div className="h-64 border rounded overflow-hidden"></div>
+             <Chatbox channel={'game-${id}'} />
+            </div>
           </div>
           <div className="style-game-image">
             <img src={data.background_image} alt={data.name} />
