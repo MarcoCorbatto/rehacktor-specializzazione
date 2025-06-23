@@ -9,13 +9,8 @@ export default function GamePage() {
 
   const initialUrl = `https://api.rawg.io/api/games/${id}?key=6741a5ee1d0b42929ef2b37f6b920f20`;
 
-  const { data, loading, error, updateUrl } = useFetchSolution(initialUrl);
-
-  useEffect(() => {
-    const newUrl = `https://api.rawg.io/api/games/${id}?key=6741a5ee1d0b42929ef2b37f6b920f20`;
-    updateUrl(newUrl);
-  }, [id]);
-
+  const { data, loading, error } = useFetchSolution(initialUrl);
+  
   const handleAddFavorites = async () => {
     const { data: userData, error: userError } = await supabase.auth.getUser();
 
@@ -27,17 +22,37 @@ export default function GamePage() {
 
     const userId = userData?.user?.id;
 
-    const { error } = await supabase
+    const { data: existingFavorite, error: checkError } = await supabase
+      .from("favorites")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("game_id", id)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error("Errore durante la verifica dei preferiti:", checkError.message);
+      alert("Errore durante la verifica dei preferiti.");
+      return;
+    }
+
+    if (existingFavorite) {
+      alert("Questo gioco è già nei tuoi preferiti!");
+      return;
+    }
+
+    const { error: insertError } = await supabase
       .from("favorites")
       .insert([
         {
           user_id: userId,
           game_id: id,
+          game_name: data.name, //  'data' disponibile qui
+          game_image: data.background_image, //   'data' sia disponibile qui
         },
       ]);
 
-    if (error) {
-      console.error("Errore inserimento:", error.message);
+    if (insertError) {
+      console.error("Errore inserimento:", insertError.message);
       alert("Errore durante l'aggiunta ai preferiti.");
     } else {
       alert("Gioco aggiunto ai preferiti!");
@@ -46,30 +61,57 @@ export default function GamePage() {
 
   return (
     <>
-      {loading && <p>Caricamento...</p>}
-      {error && <h1>{error}</h1>}
-      {data && (
-        <div className="style-gamepage">
-          <div className="style-game-info">
-            <p>{data.released}</p>
-            <h1>{data.name}</h1>
-            <p>Rating: {data.rating}</p>
-            <p>About :</p>
-            <p>{data.description_raw}</p>
+      {loading && <p className="text-center text-xl mt-8">Caricamento dettagli gioco...</p>}
+      {error && <h1 className="text-center text-red-500 text-2xl mt-8">Errore nel caricamento del gioco: {error.message || error}</h1>}
 
-            <button className="btn btn-primary mt-4" onClick={handleAddFavorites}>
-              ❤️ Aggiungi ai preferiti
-            </button>
-             
-              {/* inizio chatboxx  */}
-            <div className="mt-8">
-             <h2 className="text-xl font-semibold mb-2">chat del gioco</h2>
-             <div className="h-64 border rounded overflow-hidden"></div>
-             <Chatbox channel={'game-${id}'} />
+      {data && (
+        <div className="container mx-auto px-4 py-8"> 
+          {/* Sezione titolo e immagine di sfondo del gioco */}
+          <div className="relative w-full h-80 md:h-96 lg:h-[500px] bg-cover bg-center rounded-lg shadow-xl overflow-hidden mb-8"
+               style={{ backgroundImage: `url(${data.background_image})` }}>
+            <div className="absolute inset-0 bg-opacity-50 flex items-end p-6">
+              <h1 className="text-white text-3xl md:text-5xl font-bold drop-shadow-lg">{data.name}</h1>
             </div>
           </div>
-          <div className="style-game-image">
-            <img src={data.background_image} alt={data.name} />
+          <div>
+          </div>
+
+         
+          <div className="flex flex-col lg:flex-row lg:gap-8 mb-8">
+            {/* Colonna sinistra: Descrizione e About */}
+            <div className="lg:w-2/3 flex flex-col gap-6">
+              <div className="card bg-base-100 shadow-xl p-6">
+                <h2 className="text-2xl font-bold mb-4">About this game</h2>
+                <p className="text-gray-700 leading-relaxed text-justify">{data.description_raw}</p>
+              </div>
+
+              {/* Chat del gioco -  */}
+              <Chatbox data={data} />
+            </div>
+
+            
+            <div className="lg:w-1/3 mt-8 lg:mt-0">
+              <div className="card bg-base-100 shadow-xl p-6">
+                <h2 className="text-2xl font-bold mb-4">Game Details</h2>
+                <p className="text-md mb-2"><strong className="font-semibold">Release Date:</strong> {data.released}</p>
+                {data.rating > 0 && <p className="text-md mb-2"><strong className="font-semibold">Rating:</strong> {data.rating.toFixed(2)}</p>}
+                
+                {data.genres && data.genres.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-md mb-2"><strong className="font-semibold">Genres:</strong></p>
+                    <div className="flex flex-wrap gap-2">
+                      {data.genres.map(genre => (
+                        <span key={genre.id} className="badge badge-primary">{genre.name}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <button className="btn btn-primary mt-6 w-full" onClick={handleAddFavorites}>
+                  ❤️ Aggiungi ai preferiti
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

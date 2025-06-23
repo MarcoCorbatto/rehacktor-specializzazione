@@ -49,27 +49,31 @@ export default function Avatar({ url, size, onUpload }) {
     }
   }
 
-  return (
-    <div>
-      {avatarUrl ? (
-        <img
-          src={avatarUrl}
-          alt="Avatar"
-          className="avatar image"
-          style={{ height: size, width: size, boxShadow: "3px 3px 8px black" }}
-        />
-      ) : (
-        <div className="avatar no-image" style={{ height: size, width: size }} />
-      )}
-      <div style={{ width: size }}>
+ return (
+    <div className="flex flex-col items-center gap-3 my-4">
+      <div className="avatar">
+        <div
+          className="rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden"
+          style={{ width: size, height: size }}
+        >
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="Avatar" />
+          ) : (
+            <div className="skeleton w-full h-full"></div>
+          )}
+        </div>
+      </div>
+
+      <label className="btn btn-sm btn-outline btn-primary cursor-pointer">
+        {uploading ? 'Uploading…' : 'Upload Avatar'}
         <input
           type="file"
-          id="single"
           accept="image/*"
           onChange={uploadAvatar}
           disabled={uploading}
+          className="hidden"
         />
-      </div>
+      </label>
     </div>
   )
 }

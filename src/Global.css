@@ -7,3 +7,16 @@
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
 }
+
+body {
+    background: linear-gradient(to bottom, #f9f9ff, #e5e5f7 );
+    font-family: 'inter' , sans-serif;
+    color: #222;
+}
+
+/* main {
+    padding: 2rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+} */
+

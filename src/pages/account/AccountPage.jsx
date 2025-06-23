@@ -20,6 +20,7 @@ export default function AccountPage() {
     const getProfile = async () => {
       setLoading(true);
       const { user } = session;
+
       const { data, error } = await supabase
         .from('profiles')
         .select('username, first_name, last_name, avatar_url')
@@ -68,61 +69,87 @@ export default function AccountPage() {
     setLoading(false);
   };
 
-  return (
-    <div className="container">
-      <h2>Profile Settings</h2>
-      <form onSubmit={updateProfile} className="form-widget">
-        <Avatar
-          uid={session.user.id}
-          url={avatar_url}
-          size={100}
-          onUpload={(url) => {
-            setAvatarUrl(url);
-            updateProfile(null, url);
-          }}
-        />
-        <div>
-          <label htmlFor="email">Email</label>
-          <input id="email" type="text" value={session.user.email} disabled />
-        </div>
+return (
+    <div className="max-w-xl mx-auto p-6">
+      <div className="card bg-base-100 shadow-xl p-6">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Profile Settings</h2>
+        <form onSubmit={updateProfile} className="form-widget flex flex-col gap-4">
+          <div className="flex justify-center">
+            <Avatar
+              uid={session.user.id}
+              url={avatar_url}
+              size={100}
+              onUpload={(url) => {
+                setAvatarUrl(url);
+                updateProfile(null, url);
+              }}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            required
-            value={username || ''}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+          <div>
+            <label htmlFor="email" className="label">
+              <span className="label-text">Email</span>
+            </label>
+            <input
+              id="email"
+              type="text"
+              value={session.user.email}
+              disabled
+              className="input input-bordered w-full"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="first_name">First name</label>
-          <input
-            id="first_name"
-            type="text"
-            value={first_name || ''}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
+          <div>
+            <label htmlFor="username" className="label">
+              <span className="label-text">Username</span>
+            </label>
+            <input
+              id="username"
+              type="text"
+              required
+              value={username || ''}
+              onChange={(e) => setUsername(e.target.value)}
+              className="input input-bordered w-full"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="last_name">Last name</label>
-          <input
-            id="last_name"
-            type="text"
-            value={last_name || ''}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
+          <div>
+            <label htmlFor="first_name" className="label">
+              <span className="label-text">First Name</span>
+            </label>
+            <input
+              id="first_name"
+              type="text"
+              value={first_name || ''}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="input input-bordered w-full"
+            />
+          </div>
 
-        <div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Loading ...' : 'Update'}
-          </button>
-        </div>
-      </form>
+          <div>
+            <label htmlFor="last_name" className="label">
+              <span className="label-text">Last Name</span>
+            </label>
+            <input
+              id="last_name"
+              type="text"
+              value={last_name || ''}
+              onChange={(e) => setLastName(e.target.value)}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="mt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`btn btn-primary w-full ${loading ? 'btn-disabled' : ''}`}
+            >
+              {loading ? 'Loading ...' : 'Update'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
