@@ -28,7 +28,7 @@ export default function LoginPage() {
       console.log(data);
       let { error } = await supabase.auth.signInWithPassword({
         email: data.email,
-        password: data.password
+        password: data.password,
       });
       if (error) {
         alert("Signing in error 👎!");
@@ -41,7 +41,11 @@ export default function LoginPage() {
   };
 
   const onBlur = (property) => {
-    const message = getFieldError(FormSchemaLogin, property, formState[property]);
+    const message = getFieldError(
+      FormSchemaLogin,
+      property,
+      formState[property]
+    );
     setFormErrors((prev) => ({ ...prev, [property]: message }));
     setTouchedFields((prev) => ({ ...prev, [property]: true }));
   };
@@ -61,37 +65,68 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={onSubmit} noValidate>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formState.email}
-          onChange={setField("email")}
-          onBlur={() => onBlur("email")}
-          aria-invalid={isInvalid("email")}
-          required
-        />
-        {formErrors.email && <small>{formErrors.email}</small>}
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+      <div className="card w-full max-w-md shadow-xl bg-base-100">
+        <div className="card-body">
+          <h2 className="text-2xl font-bold text-center mb-4">Welcome back</h2>
+          <form onSubmit={onSubmit} noValidate className="space-y-4">
+            {/* Email */}
+            <div className="form-control">
+              <label htmlFor="email" className="label">
+                <span className="label-text">Email</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                className={`input input-bordered ${
+                  isInvalid("email") ? "input-error" : ""
+                }`}
+                value={formState.email}
+                onChange={setField("email")}
+                onBlur={() => onBlur("email")}
+                autoComplete="off"
+                required
+              />
+              {formErrors.email && (
+                <small className="text-error text-sm mt-1">
+                  {formErrors.email}
+                </small>
+              )}
+            </div>
 
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formState.password}
-          onChange={setField("password")}
-          onBlur={() => onBlur("password")}
-          aria-invalid={isInvalid("password")}
-          required
-        />
-        {formErrors.password && <small>{formErrors.password}</small>}
+            {/* Password */}
+            <div className="form-control">
+              <label htmlFor="password" className="label">
+                <span className="label-text">Password</span>
+              </label>
+              <input
+                type="password"
+                id="password"
+                className={`input input-bordered ${
+                  isInvalid("password") ? "input-error" : ""
+                }`}
+                value={formState.password}
+                onChange={setField("password")}
+                onBlur={() => onBlur("password")}
+                autoComplete="off"
+                required
+              />
+              {formErrors.password && (
+                <small className="text-error text-sm mt-1">
+                  {formErrors.password}
+                </small>
+              )}
+            </div>
 
-        <br />
-        <button type="submit">Sign In</button>
-      </form>
+            {/* Submit */}
+            <div className="form-control mt-4">
+              <button type="submit" className="btn btn-primary w-full">
+                Sign In
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

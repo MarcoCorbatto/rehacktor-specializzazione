@@ -9,14 +9,61 @@
 }
 
 body {
-    background: linear-gradient(to bottom, #f9f9ff, #e5e5f7 );
-    font-family: 'inter' , sans-serif;
-    color: #222;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, );
+  font-family: sans-serif;
+  position: relative;
 }
-
-/* main {
-    padding: 2rem 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
+/* 
+.background-waves {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('waves.svg') no-repeat center center;
+  background-size: cover;
+  opacity: 0.4;
+  z-index: -1;
+  pointer-events: none;
 } */
 
+.card {
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: white;
+}
+.card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.heart-button {
+  background: #8b5cf6;
+  border: none;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.heart-button:hover {
+  background: #7c3aed;
+}
+
+.genre-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    background-color: aquamarine;
+    color: #555;
+}
+
+.search-bar {
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}

@@ -5,7 +5,7 @@ import { getErrors, getFieldError } from "../../lib/validationForm";
 import supabase from "../../supabase/supabase-client";
 
 export default function RegisterPage() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [touchedFields, setTouchedFields] = useState({});
@@ -68,76 +68,131 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={onSubmit} noValidate>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formState.email}
-          onChange={setField("email")}
-          onBlur={onBlur("email")}
-          aria-invalid={isInvalid("email")}
-          required
-        />
-        {formErrors.email && <small>{formErrors.email}</small>}
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+      <div className="card w-full max-w-md shadow-xl bg-base-100">
+        <div className="card-body">
+          <h2 className="text-2xl font-bold text-center mb-4">Create your account</h2>
+          <form onSubmit={onSubmit} noValidate className="space-y-4">
+            {/* Email */}
+            <div className="form-control">
+              <label htmlFor="email" className="label">
+                <span className="label-text">Email</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                className={`input input-bordered ${isInvalid("email") ? "input-error" : ""}`}
+                value={formState.email}
+                onChange={setField("email")}
+                onBlur={onBlur("email")}
+                autoComplete="off"
+                required
+              />
+              {formErrors.email && (
+                <small className="text-error text-sm block mt-1">
+                  {formErrors.email}
+                </small>
+              )}
+            </div>
 
-        <label htmlFor="firstName">First Name :</label>
-        <input
-          type="text"
-          id="firstName"
-          name="firstName"
-          value={formState.firstName}
-          onChange={setField("firstName")}
-          onBlur={onBlur("firstName")}
-          aria-invalid={isInvalid("firstName")}
-          required
-        />
-        {formErrors.firstName && <small>{formErrors.firstName}</small>}
+            {/* First Name */}
+            <div className="form-control">
+              <label htmlFor="firstName" className="label">
+                <span className="label-text">First Name</span>
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                className={`input input-bordered ${isInvalid("firstName") ? "input-error" : ""}`}
+                value={formState.firstName}
+                onChange={setField("firstName")}
+                onBlur={onBlur("firstName")}
+                autoComplete="off"
+                required
+              />
+              {formErrors.firstName && (
+                <small className="text-error text-sm block mt-1">
+                  {formErrors.firstName}
+                </small>
+              )}
+            </div>
 
-        <label htmlFor="lastName">Last Name :</label>
-        <input
-          type="text"
-          id="lastName"
-          name="lastName"
-          value={formState.lastName}
-          onChange={setField("lastName")}
-          onBlur={onBlur("lastName")}
-          aria-invalid={isInvalid("lastName")}
-          required
-        />
-        {formErrors.lastName && <small>{formErrors.lastName}</small>}
+            {/* Last Name */}
+            <div className="form-control">
+              <label htmlFor="lastName" className="label">
+                <span className="label-text">Last Name</span>
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                className={`input input-bordered ${isInvalid("lastName") ? "input-error" : ""}`}
+                value={formState.lastName}
+                onChange={setField("lastName")}
+                onBlur={onBlur("lastName")}
+                autoComplete="off"
+                required
+              />
+              {formErrors.lastName && (
+                <small className="text-error text-sm block mt-1">
+                  {formErrors.lastName}
+                </small>
+              )}
+            </div>
 
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formState.username}
-          onChange={setField("username")}
-          onBlur={onBlur("username")}
-          aria-invalid={isInvalid("username")}
-          required
-        />
-        {formErrors.username && <small>{formErrors.username}</small>}
+            {/* Username */}
+            <div className="form-control">
+              <label htmlFor="username" className="label">
+                <span className="label-text">Username</span>
+              </label>
+              <input
+                type="text"
+                id="username"
+                className={`input input-bordered ${isInvalid("username") ? "input-error" : ""}`}
+                value={formState.username}
+                onChange={setField("username")}
+                onBlur={onBlur("username")}
+                autoComplete="off"
+                required
+              />
+              {formErrors.username && (
+                <small className="text-error text-sm block mt-1">
+                  {formErrors.username}
+                </small>
+              )}
+            </div>
 
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formState.password}
-          onChange={setField("password")}
-          onBlur={onBlur("password")}
-          aria-invalid={isInvalid("password")}
-          required
-        />
-        {formErrors.password && <small>{formErrors.password}</small>}
+            {/* Password */}
+            <div className="form-control">
+              <label htmlFor="password" className="label">
+                <span className="label-text">Password</span>
+              </label>
+              <input
+                type="password"
+                id="password"
+                className={`input input-bordered ${isInvalid("password") ? "input-error" : ""}`}
+                value={formState.password}
+                onChange={setField("password")}
+                onBlur={onBlur("password")}
+                autoComplete="off"
+                required
+              />
+              {formErrors.password && (
+                <small className="text-error text-sm block mt-1">
+                  {formErrors.password}
+                </small>
+              )}
+            </div>
 
-        <br />
-        <button type="submit">Sign Up</button>
-      </form>
+            {/* Submit */}
+            <div className="form-control mt-4">
+              <button type="submit" className="btn btn-primary w-full">
+                Sign Up
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
+
 }

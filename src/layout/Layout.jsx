@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 
 export default function Layout() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100"> 
+    <div className="flex flex-col min-h-screen text-gray-900 dark:text-gray-100 bg-transparent"> 
       
       <Header /> 
 

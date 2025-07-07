@@ -102,7 +102,7 @@ export default function Chatbox({ data }) {
       >
         {messages.length === 0 ? (
           <p className="text-center text-gray-500">
-            Nessun messaggio ancora. Sii il primo a chattare!
+            No messages yet. Be the first to chat!
           </p>
         ) : (
           messages.map((msg) => (
@@ -135,12 +135,12 @@ export default function Chatbox({ data }) {
               autoComplete="off"
             />
             <button type="submit" className="btn btn-primary">
-              Invia
+              Send
             </button>
           </form>
         ) : (
           <p className="text-center text-gray-500">
-            Effettua il login per partecipare alla chat.
+            Please log in to join the chat.
           </p>
         )}
       </div>

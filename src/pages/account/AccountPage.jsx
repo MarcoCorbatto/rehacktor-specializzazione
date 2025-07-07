@@ -5,18 +5,21 @@ import Avatar from '../../components/Avatar';
 
 export default function AccountPage() {
   const { session } = useContext(SessionContext);
+
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [first_name, setFirstName] = useState(null);
   const [last_name, setLastName] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
+  const [avatar, setAvatar] = useState(null); 
 
-  if (!session) {
-    return <p>Loading session...</p>;
-  }
 
+  
   useEffect(() => {
+    if (!session) return;
+
     let ignore = false;
+
     const getProfile = async () => {
       setLoading(true);
       const { user } = session;
@@ -68,6 +71,10 @@ export default function AccountPage() {
 
     setLoading(false);
   };
+
+    if (!session) {
+    return <div>Please login</div>;
+  }
 
 return (
     <div className="max-w-xl mx-auto p-6">

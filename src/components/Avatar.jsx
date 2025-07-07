@@ -1,71 +1,91 @@
-import { useEffect, useState } from 'react'
-import supabase from '../supabase/supabase-client'
+import { useEffect, useState } from "react";
+import supabase from "../supabase/supabase-client";
 
-export default function Avatar({ url, size, onUpload }) {
-  const [avatarUrl, setAvatarUrl] = useState(null)
-  const [uploading, setUploading] = useState(false)
+export default function Avatar({ url, size = 100, onUpload }) {
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (url) downloadImage(url)
-  }, [url])
+    if (url) downloadImage(url);
+  }, [url]);
 
   const downloadImage = async (path) => {
     try {
-      const { data, error } = await supabase.storage.from('avatars').download(path)
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .download(path);
       if (error) {
-        throw error
+        throw error;
       }
-      const url = URL.createObjectURL(data)
-      setAvatarUrl(url)
+      const url = URL.createObjectURL(data);
+      setAvatarUrl(url);
     } catch (error) {
-      console.log('Error downloading image: ', error.message)
+      console.log("Error downloading image: ", error.message);
     }
-  }
+  };
 
   const uploadAvatar = async (event) => {
     try {
-      setUploading(true)
+      setUploading(true);
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.')
+        throw new Error("You must select an image to upload.");
       }
 
-      const file = event.target.files[0]
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
+      const file = event.target.files[0];
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
 
-      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, file);
 
       if (uploadError) {
-        throw uploadError
+        throw uploadError;
       }
 
-      onUpload(filePath)
+      onUpload(filePath);
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
- return (
+  return (
     <div className="flex flex-col items-center gap-3 my-4">
-      <div className="avatar">
-        <div
-          className="rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden"
-          style={{ width: size, height: size }}
-        >
-          {avatarUrl ? (
-            <img src={avatarUrl} alt="Avatar" />
-          ) : (
-            <div className="skeleton w-full h-full"></div>
-          )}
-        </div>
-      </div>
+      <div
+  className="rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden bg-gray-200"
+  style={{
+    width: size,
+    height: size,
+    minWidth: size,
+    minHeight: size,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  {avatarUrl ? (
+    <img
+      src={avatarUrl}
+      alt="Avatar"
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition: "center",
+        display: "block",
+      }}
+    />
+  ) : (
+    <div className="w-full h-full bg-gray-300 animate-pulse" />
+  )}
+</div>
 
       <label className="btn btn-sm btn-outline btn-primary cursor-pointer">
-        {uploading ? 'Uploading…' : 'Upload Avatar'}
+        {uploading ? "loading..." : "upload Avatar"}
         <input
           type="file"
           accept="image/*"
@@ -75,5 +95,5 @@ export default function Avatar({ url, size, onUpload }) {
         />
       </label>
     </div>
-  )
+  );
 }
