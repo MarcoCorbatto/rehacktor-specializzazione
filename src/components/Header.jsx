@@ -74,8 +74,8 @@ export default function Header() {
               role="button"
               className="btn btn-ghost btn-circle avatar"
             >
-              
-              <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
+              <div className="rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden"
+                style={{ width: 40, height: 40 }}>
                 <Avatar
                   uid={session.user.id}
                   url={avatarUrl}
@@ -84,9 +84,9 @@ export default function Header() {
                     setAvatarUrl(url);
                     updateProfile(null, url);
                   }}
+                  showUploadButton={false}
                 />
               </div>
-              
 
             </div>
             <ul

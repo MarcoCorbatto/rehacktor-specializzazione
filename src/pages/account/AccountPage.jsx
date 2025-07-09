@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext } from 'react'
-import supabase from '../..//supabase/supabase-client'
-import SessionContext from '../../context/SessionContext';
-import Avatar from '../../components/Avatar';
+import { useState, useEffect, useContext } from "react";
+import supabase from "../..//supabase/supabase-client";
+import SessionContext from "../../context/SessionContext";
+import Avatar from "../../components/Avatar";
 
 export default function AccountPage() {
   const { session } = useContext(SessionContext);
@@ -11,10 +11,8 @@ export default function AccountPage() {
   const [first_name, setFirstName] = useState(null);
   const [last_name, setLastName] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
-  const [avatar, setAvatar] = useState(null); 
+  const [avatar, setAvatar] = useState(null);
 
-
-  
   useEffect(() => {
     if (!session) return;
 
@@ -25,9 +23,9 @@ export default function AccountPage() {
       const { user } = session;
 
       const { data, error } = await supabase
-        .from('profiles')
-        .select('username, first_name, last_name, avatar_url')
-        .eq('id', user.id)
+        .from("profiles")
+        .select("username, first_name, last_name, avatar_url")
+        .eq("id", user.id)
         .single();
 
       if (!ignore) {
@@ -65,22 +63,27 @@ export default function AccountPage() {
       updated_at: new Date(),
     };
 
-    const { error } = await supabase.from('profiles').upsert(updates);
+    const { error } = await supabase.from("profiles").upsert(updates);
     if (error) alert(error.message);
     else if (avatarUrl) setAvatarUrl(avatarUrl);
 
     setLoading(false);
   };
 
-    if (!session) {
+  if (!session) {
     return <div>Please login</div>;
   }
 
-return (
+  return (
     <div className="max-w-xl mx-auto p-6">
       <div className="card bg-base-100 shadow-xl p-6">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Profile Settings</h2>
-        <form onSubmit={updateProfile} className="form-widget flex flex-col gap-4">
+        <h2 className="text-2xl font-semibold mb-4 text-center">
+          Profile Settings
+        </h2>
+        <form
+          onSubmit={updateProfile}
+          className="form-widget flex flex-col gap-4"
+        >
           <div className="flex justify-center">
             <Avatar
               uid={session.user.id}
@@ -114,7 +117,7 @@ return (
               id="username"
               type="text"
               required
-              value={username || ''}
+              value={username || ""}
               onChange={(e) => setUsername(e.target.value)}
               className="input input-bordered w-full"
             />
@@ -127,7 +130,7 @@ return (
             <input
               id="first_name"
               type="text"
-              value={first_name || ''}
+              value={first_name || ""}
               onChange={(e) => setFirstName(e.target.value)}
               className="input input-bordered w-full"
             />
@@ -140,7 +143,7 @@ return (
             <input
               id="last_name"
               type="text"
-              value={last_name || ''}
+              value={last_name || ""}
               onChange={(e) => setLastName(e.target.value)}
               className="input input-bordered w-full"
             />
@@ -150,9 +153,11 @@ return (
             <button
               type="submit"
               disabled={loading}
-              className={`btn btn-primary w-full ${loading ? 'btn-disabled' : ''}`}
+              className={`btn btn-primary w-full ${
+                loading ? "btn-disabled" : ""
+              }`}
             >
-              {loading ? 'Loading ...' : 'Update'}
+              {loading ? "Loading ..." : "Update"}
             </button>
           </div>
         </form>
