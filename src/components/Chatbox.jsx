@@ -4,18 +4,17 @@ import SessionContext from "../context/SessionContext";
 
 export default function Chatbox({ data }) {
   const { session } = useContext(SessionContext);
-  const [messages, setMessages] = useState([]); // Stato per memorizzare i messaggi della chat
-  const chatPanelRef = useRef(null); // Ref per lo scroll automatico
+  const [messages, setMessages] = useState([]); //  memorizzare i messaggi 
+  const chatPanelRef = useRef(null); // scroll automatico
 
-  // Funzione per recuperare i messaggi iniziali e sottoscriversi ai nuovi
+  //  recuperare i messaggi iniziali 
   useEffect(() => {
-    // 1. Funzione per recuperare i messaggi iniziali
+   
     const fetchMessages = async () => {
       const { data: initialMessages, error } = await supabase
         .from("messages")
         .select("*");
-      // .eq("game_id", data.id) // Filtra i messaggi per l'ID del gioco corrente
-      // .order("created_at", { ascending: true }); // Ordina per data di creazione
+      
 
       if (error) {
         console.error("Errore nel recupero dei messaggi:", error);
@@ -24,39 +23,39 @@ export default function Chatbox({ data }) {
       }
     };
 
-    // 2. Sottoscrizione ai nuovi messaggi in tempo reale
+    //  nuovi messaggi in tempo reale
     const messagesChannel = supabase
-      .channel("game_chat:" + data.id) // Usa un canale specifico per il gioco
+      .channel("game_chat:" + data.id)
       .on(
         "postgres_changes",
         {
-          event: "INSERT", // Ascolta solo gli inserimenti (nuovi messaggi)
+          event: "INSERT", // (nuovi messaggi)
           schema: "public",
           table: "messages",
-          filter: `game_id=eq.${data.id}`, // Filtra solo i messaggi per questo game_id
+          filter: `game_id=eq.${data.id}`, // Filtra solo i messaggi  game_id
         },
         (payload) => {
-          // Quando arriva un nuovo messaggio, aggiungilo allo stato esistente
+          // Quando arriva un nuovo messaggio
           setMessages((prevMessages) => [...prevMessages, payload.new]);
         }
       )
       .subscribe();
 
-    // Chiama la funzione per recuperare i messaggi iniziali
+    // funzione per recuperare i messaggi iniziali
     fetchMessages();
 
-    // Funzione di cleanup: MOLTO IMPORTANTE per disiscriversi dal canale Realtime
+    // Funzione di cleanup per disiscriversi dal canale Realtime
     return () => {
       supabase.removeChannel(messagesChannel);
     };
-  }, [data.id]); // Riesegui l'effetto se cambia l'ID del gioco
+  }, [data.id]); 
 
-  // Effetto per scrollare automaticamente in basso quando arrivano nuovi messaggi
+  
   useEffect(() => {
     if (chatPanelRef.current) {
       chatPanelRef.current.scrollTop = chatPanelRef.current.scrollHeight;
     }
-  }, [messages]); // Dipende dallo stato dei messaggi
+  }, [messages]); 
 
   const handleMessageSubmit = async (event) => {
     event.preventDefault();
@@ -74,18 +73,17 @@ export default function Chatbox({ data }) {
         .insert([
           {
             profile_id: session.user.id,
-            profile_username: session.user.user_metadata.username, // Assicurati che user_metadata.username esista
+            profile_username: session.user.user_metadata.username, 
             game_id: data.id,
             content: message,
           },
         ])
-        .select(); // Non è necessario .select() qui se non ti serve il ritorno immediato
-
+        .select(); 
       if (error) {
         console.log("Errore invio messaggio:", error);
         alert("Errore nell'invio del messaggio.");
       } else {
-        inputMessageForm.reset(); // Resetta il campo input dopo l'invio
+        inputMessageForm.reset(); 
       }
     }
   };
@@ -93,11 +91,11 @@ export default function Chatbox({ data }) {
   return (
     <div className="chat-container card bg-base-100 shadow-xl p-4 mt-6">
       {" "}
-      {/* Aggiungi stile DaisyUI */}
+     
       <h4 className="text-xl font-bold mb-4">Gamers chat</h4>
       {/* Pannello della chat */}
       <div
-        ref={chatPanelRef} // ref qui
+        ref={chatPanelRef} 
         className="chat-panel border border-base-300 p-4 rounded-lg bg-base-200 h-80 overflow-y-auto flex flex-col gap-2"
       >
         {messages.length === 0 ? (
@@ -110,7 +108,7 @@ export default function Chatbox({ data }) {
               key={msg.id}
               className={`chat ${
                 msg.profile_id === session?.user.id ? "chat-end" : "chat-start"
-              }`} // Stile DaisyUI per chat
+              }`} 
             >
               <div className="chat-header text-sm text-gray-600">
                 {msg.profile_username || "Utente Sconosciuto"}
@@ -123,15 +121,15 @@ export default function Chatbox({ data }) {
           ))
         )}
       </div>
-      {/* Form di input per i messaggi */}
+     
       <div className="mt-4">
-        {session ? ( // Mostra il form se loggato
+        {session ? ( 
           <form onSubmit={handleMessageSubmit} className="flex gap-2">
             <input
               type="text"
               name="message"
               placeholder="Scrivi un messaggio..."
-              className="input input-bordered w-full" // DaisyUI
+              className="input input-bordered w-full" 
               autoComplete="off"
             />
             <button type="submit" className="btn btn-primary">

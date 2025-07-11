@@ -11,8 +11,9 @@ export default function HomePage() {
     <div className="min-h-screen bg-base-200 px-4 py-10">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold text-primary">🎮 Discover Top Games</h1>
-          <p className="mt-2 text-lg text-base-content">Stay updated with the best games of the year.</p>
+          <h1 className="text-4xl font-extrabold text-primary">🎮 Discover Top Games</h1> 
+          {/* ICONA ORA FUNZIONA NON TOCCARE PIU RICORDATI */}
+          <p className="mt-2 text-lg text-base-content">Stay updated with the best games</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">

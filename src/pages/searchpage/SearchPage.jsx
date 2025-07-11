@@ -20,22 +20,22 @@ export default function SearchPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">
-        Risultati per: <span className="text-primary">{game}</span>
+        Result for: <span className="text-primary">{game}</span>
       </h1>
 
       {loading && (
         <p className="col-span-full text-center text-xl text-gray-600">
-          Caricamento giochi...
+          Loading games...
         </p>
       )}
       {error && (
         <p className="col-span-full text-red-500 text-xl text-center">
-          Errore nel caricamento dei giochi: {error.message || error}
+          Error to loading games: {error.message || error}
         </p>
       )}
       {data && data.results.length === 0 && !loading && (
         <p className="col-span-full text-center text-gray-500 text-xl">
-          Nessun gioco trovato.
+          No games found.
         </p>
       )}
 

@@ -1,3 +1,4 @@
+import Alert from "../../components/Alert";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../supabase/supabase-client";
@@ -17,6 +18,13 @@ export default function LoginPage() {
     password: "",
   });
 
+  const [alert, setAlert] = useState({ type: "", message: ""});
+
+   const showAlert = (type, message) => {
+    setAlert({ type, message });
+    setTimeout(() => setAlert({ type: "", message: "" }), 3000);
+  };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setFormSubmitted(true);
@@ -30,10 +38,11 @@ export default function LoginPage() {
         email: data.email,
         password: data.password,
       });
-      if (error) {
-        alert("Signing in error 👎!");
+
+       if (error) {
+        showAlert("error", "Signing in error 👎!");
       } else {
-        alert("Signed In 👍!");
+        showAlert("success", "Signed In 👍!");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         navigate("/");
       }
@@ -69,6 +78,14 @@ export default function LoginPage() {
       <div className="card w-full max-w-md shadow-xl bg-base-100">
         <div className="card-body">
           <h2 className="text-2xl font-bold text-center mb-4">Welcome back</h2>
+
+           {/* ALERT */}
+          {alert.message && (
+            <div className="fixed top-4 right-4 z-50">
+              <Alert type={alert.type} message={alert.message} />
+            </div>
+          )}
+          
           <form onSubmit={onSubmit} noValidate className="space-y-4">
             {/* Email */}
             <div className="form-control">

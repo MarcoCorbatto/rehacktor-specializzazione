@@ -6,7 +6,6 @@ import "./Global.css";
 export default function App() {
   return (
     <>
-    {/* <div className="background-waves"></div> */}
     <SessionProvider>
       <FavoritesProvider>
         <Routing />

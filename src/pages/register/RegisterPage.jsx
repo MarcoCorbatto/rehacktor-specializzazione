@@ -1,3 +1,4 @@
+import Alert from "../../components/Alert";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormSchema as ConfirmSchema } from "../../lib/validationForm";
@@ -16,6 +17,13 @@ export default function RegisterPage() {
     username: "",
     password: "",
   });
+
+  const [alert, setAlert] = useState({ type: "", message: "" });
+
+  const showAlert = (type, message) => {
+    setAlert({ type, message });
+    setTimeout(() => setAlert({ type: "", message: "" }), 3000);
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -37,10 +45,10 @@ export default function RegisterPage() {
           },
         },
       });
-      if (error) {
-        alert("Signing up error 👎🏻!");
+      if (signUpError) {
+        showAlert("error", "Signing up error 👎🏻!");
       } else {
-        alert("Signed up 👍🏻!");
+        showAlert("success", "Signed up 👍🏻! Check your email.");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         navigate("/");
       }
@@ -71,7 +79,21 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
       <div className="card w-full max-w-md shadow-xl bg-base-100">
         <div className="card-body">
-          <h2 className="text-2xl font-bold text-center mb-4">Create your account</h2>
+          <h2 className="text-2xl font-bold text-center mb-4">
+            Create your account
+          </h2>
+
+          {/* ALERT */}
+          {alert.message && (
+            <div className="fixed top-4 right-4 z-50">
+              <Alert
+                type={alert.type}
+                message={alert.message}
+                onClose={() => setAlert({ type: "", message: "" })}
+              />
+            </div>
+          )}
+
           <form onSubmit={onSubmit} noValidate className="space-y-4">
             {/* Email */}
             <div className="form-control">
@@ -81,7 +103,9 @@ export default function RegisterPage() {
               <input
                 type="email"
                 id="email"
-                className={`input input-bordered ${isInvalid("email") ? "input-error" : ""}`}
+                className={`input input-bordered ${
+                  isInvalid("email") ? "input-error" : ""
+                }`}
                 value={formState.email}
                 onChange={setField("email")}
                 onBlur={onBlur("email")}
@@ -103,7 +127,9 @@ export default function RegisterPage() {
               <input
                 type="text"
                 id="firstName"
-                className={`input input-bordered ${isInvalid("firstName") ? "input-error" : ""}`}
+                className={`input input-bordered ${
+                  isInvalid("firstName") ? "input-error" : ""
+                }`}
                 value={formState.firstName}
                 onChange={setField("firstName")}
                 onBlur={onBlur("firstName")}
@@ -125,7 +151,9 @@ export default function RegisterPage() {
               <input
                 type="text"
                 id="lastName"
-                className={`input input-bordered ${isInvalid("lastName") ? "input-error" : ""}`}
+                className={`input input-bordered ${
+                  isInvalid("lastName") ? "input-error" : ""
+                }`}
                 value={formState.lastName}
                 onChange={setField("lastName")}
                 onBlur={onBlur("lastName")}
@@ -147,7 +175,9 @@ export default function RegisterPage() {
               <input
                 type="text"
                 id="username"
-                className={`input input-bordered ${isInvalid("username") ? "input-error" : ""}`}
+                className={`input input-bordered ${
+                  isInvalid("username") ? "input-error" : ""
+                }`}
                 value={formState.username}
                 onChange={setField("username")}
                 onBlur={onBlur("username")}
@@ -169,7 +199,9 @@ export default function RegisterPage() {
               <input
                 type="password"
                 id="password"
-                className={`input input-bordered ${isInvalid("password") ? "input-error" : ""}`}
+                className={`input input-bordered ${
+                  isInvalid("password") ? "input-error" : ""
+                }`}
                 value={formState.password}
                 onChange={setField("password")}
                 onBlur={onBlur("password")}
@@ -194,5 +226,4 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-
 }

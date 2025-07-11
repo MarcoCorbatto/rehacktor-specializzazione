@@ -2,16 +2,16 @@ import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import supabase from "../supabase/supabase-client";
-import SessionContext from "../context/SessionContext"; // Assicurati di avere questo contesto per l'utente loggato
+import SessionContext from "../context/SessionContext"; 
 
 dayjs.extend(relativeTime);
 
-export default function RealtimeChat({ data }) { // Assumiamo che 'data' sia l'oggetto del gioco
-  const { session } = useContext(SessionContext); // Recupera la sessione utente
+export default function RealtimeChat({ data }) { 
+  const { session } = useContext(SessionContext); 
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false); // Rinomino per chiarezza
-  const [error, setError] = useState(null); // Rinomino per chiarezza
-  const chatPanelRef = useRef(null); // Ref per lo scroll automatico
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
+  const chatPanelRef = useRef(null); 
 
   // Funzione per recuperare i messaggi iniziali
   const fetchMessages = useCallback(async () => {
@@ -21,14 +21,14 @@ export default function RealtimeChat({ data }) { // Assumiamo che 'data' sia l'o
       return;
     }
     setLoading(true);
-    setError(null); // Resetta errori precedenti
+    setError(null); 
 
     console.log("RealtimeChat: Inizio fetch initial messages per game ID:", data.id);
     const { data: initialMessages, error: fetchError } = await supabase
       .from("messages")
       .select("*")
-      .eq("game_id", data.id) // Filtra i messaggi per l'ID del gioco corrente
-      .order("created_at", { ascending: true }); // Ordina per data di creazione
+      .eq("game_id", data.id) 
+      .order("created_at", { ascending: true }); 
 
     if (fetchError) {
       console.error("RealtimeChat: Errore nel recupero dei messaggi iniziali:", fetchError);
@@ -40,34 +40,34 @@ export default function RealtimeChat({ data }) { // Assumiamo che 'data' sia l'o
     setLoading(false);
   }, [data?.id]);
 
-  // Effetto per la gestione Realtime e il fetch iniziale
+  
   useEffect(() => {
     if (!data?.id) {
-      // Se l'ID del gioco non è ancora disponibile, non procedere
+      
       setMessages([]);
       return;
     }
 
-    // Esegui il fetch iniziale dei messaggi quando il componente si monta o data.id cambia
+    //  fetch iniziale 
     fetchMessages();
 
-    // Sottoscrizione ai cambiamenti in tempo reale
-    const channelName = `game_chat:${data.id}`; // Nome del canale specifico per il gioco
+    //  cambiamenti in tempo reale
+    const channelName = `game_chat:${data.id}`; 
     console.log("RealtimeChat: Tentativo di sottoscrizione al canale:", channelName);
 
     const messagesChannel = supabase
-      .channel(channelName) // Usa un canale specifico per il gioco
+      .channel(channelName) 
       .on(
         'postgres_changes',
         {
-          event: 'INSERT', // Ascolta solo gli inserimenti (nuovi messaggi)
+          event: 'INSERT', 
           schema: 'public',
           table: 'messages',
-          filter: `game_id=eq.${data.id}` // Filtra solo i messaggi per questo game_id
+          filter: `game_id=eq.${data.id}` 
         },
         (payload) => {
           console.log('RealtimeChat: Realtime - Nuovo messaggio ricevuto via INSERT!', payload.new);
-          // Aggiungi il nuovo messaggio allo stato esistente
+     
           setMessages((prevMessages) => [...prevMessages, payload.new]);
         }
       )
@@ -83,18 +83,18 @@ export default function RealtimeChat({ data }) { // Assumiamo che 'data' sia l'o
         }
       });
 
-    // Cleanup function: disiscriversi dal canale Realtime quando il componente si smonta
+   
     return () => {
       console.log('RealtimeChat: Cleanup - Rimozione canale:', channelName);
-      // È importante rimuovere il canale per evitare memory leak e sottoscrizioni multiple
+     
       supabase.removeChannel(messagesChannel);
     };
-  }, [data?.id, fetchMessages]); // Dipendenze: ID del gioco e la funzione fetchMessages
+  }, [data?.id, fetchMessages]); 
 
-  // Effetto per scrollare automaticamente in basso quando arrivano nuovi messaggi
+ 
   useEffect(() => {
     scrollSmoothToBottom();
-  }, [messages]); // Dipende dallo stato dei messaggi
+  }, [messages]); 
 
   const scrollSmoothToBottom = () => {
     if (chatPanelRef.current) {
@@ -122,7 +122,7 @@ export default function RealtimeChat({ data }) { // Assumiamo che 'data' sia l'o
             profile_username: session.user.user_metadata.username,
             game_id: data.id,
             content: message,
-            created_at: new Date().toISOString(), // Aggiungi created_at in inserimento
+            created_at: new Date().toISOString(), 
           },
         ]);
 
@@ -172,7 +172,7 @@ export default function RealtimeChat({ data }) { // Assumiamo che 'data' sia l'o
         )}
       </div>
 
-      {/* Form di input per i messaggi */}
+      {/*FORMM input per i messaggi */}
       <div className="mt-4">
         {session ? (
           <form onSubmit={handleMessageSubmit} className="flex gap-2">

@@ -34,7 +34,7 @@ export default function CardGame({ game }) {
       .single();
 
     if (checkError && checkError.code !== "PGRST116") {
-      // PGRST116 = no results found
+      // PGRST116 = nota 2 no results found no risultati ricordati questo codiceee
       console.error("Error while verifying favorites:", checkError.message);
       showAlert("error", "Error while verifying favorites.");
       return;
@@ -90,7 +90,7 @@ export default function CardGame({ game }) {
         </div>
       )}
 
-      {/* CARD */}
+      {/* CARDdd */}
       <Link
         to={`/games/${game.slug}/${game.id}`}
         className="flex flex-col h-full"

@@ -47,7 +47,7 @@ export default function Header() {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) console.log(error);
-    // else alert("Signed out 👋");
+   
     Alert();
   };
 

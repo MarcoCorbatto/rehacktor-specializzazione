@@ -16,8 +16,8 @@ export default function ProfilePage() {
     <div className="container">
       <h2>Hey {session?.user.user_metadata.first_name}Hello user </h2>
       <details className="dropdown">
-        <summary>Favoriti</summary>
-        {favorites.length == 0 && <p>Non ci sono favoriti al momento ...</p>}
+        <summary>Favorites</summary>
+        {favorites.length == 0 && <p>There are no favorites at the moment ...</p>}
         <ul>
           {favorites.map((game) => (
             <li key={game.id} style={favoriteGameUI}>

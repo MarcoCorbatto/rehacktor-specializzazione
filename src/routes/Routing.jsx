@@ -30,3 +30,6 @@ export function Routing() {
     </BrowserRouter>
   );
 }
+
+
+// tutto apposto non toccare piu account che ora funziona senza blocchi

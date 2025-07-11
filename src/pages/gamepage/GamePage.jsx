@@ -21,7 +21,7 @@ export default function GamePage() {
 
     setTimeout(() => {
       setShowAlert(false);
-    }, 3000); // auto-hide after 3 seconds
+    }, 3000); // auto-hide 
   };
 
   const handleAddFavorites = async () => {
@@ -83,7 +83,7 @@ export default function GamePage() {
         </div>
       )}
 
-      {/* LOADING / ERROR / MAIN CONTENT */}
+      {/* LOADING / ERROR / MAIN CONTENT NON TOCCARE PIU QUI */}
       {loading && (
         <p className="text-center text-xl mt-8">Loading game details...</p>
       )}
@@ -95,7 +95,7 @@ export default function GamePage() {
 
       {data && (
         <div className="container mx-auto px-4 py-8">
-          {/* Game Banner */}
+        
           <div
             className="relative w-full h-80 md:h-96 lg:h-[500px] bg-cover bg-center rounded-lg shadow-xl overflow-hidden mb-8"
             style={{ backgroundImage: `url(${data.background_image})` }}
@@ -109,7 +109,7 @@ export default function GamePage() {
 
           {/* Page Layout */}
           <div className="flex flex-col lg:flex-row lg:gap-8 mb-8">
-            {/* LEFT COLUMN */}
+          
             <div className="lg:w-2/3 flex flex-col gap-6">
               <div className="card bg-base-100 shadow-xl p-6">
                 <h2 className="text-2xl font-bold mb-4">About this game</h2>
@@ -121,7 +121,7 @@ export default function GamePage() {
               <Chatbox data={data} />
             </div>
 
-            {/* RIGHT COLUMN */}
+         
             <div className="lg:w-1/3 mt-8 lg:mt-0">
               <div className="card bg-base-100 shadow-xl p-6">
                 <h2 className="text-2xl font-bold mb-4">Game Details</h2>

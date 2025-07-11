@@ -104,3 +104,5 @@ export default function Avatar({
     </div>
   );
 }
+
+// nota non toccare piu nulla se no l'immagine non va piu ricordaaaaa...
